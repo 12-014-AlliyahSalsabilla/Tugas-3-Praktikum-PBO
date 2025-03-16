@@ -1,0 +1,60 @@
+import random
+
+class Father:
+    def __init__(self, blood_type):
+        self.blood_type = blood_type
+
+class Mother:
+    def __init__(self, blood_type):
+        self.blood_type = blood_type
+
+class Child:
+    def __init__(self, father, mother):
+        self.blood_type = self.inherit_blood_type(father.blood_type, mother.blood_type)
+    
+    def inherit_blood_type(self, father_type, mother_type):
+        # Mendapatkan alel dari masing-masing orang tua
+        father_allele = random.choice(self.get_alleles(father_type))
+        mother_allele = random.choice(self.get_alleles(mother_type))
+        
+        # Menentukan golongan darah berdasarkan kombinasi alel
+        return self.determine_blood_type(father_allele, mother_allele)
+    
+    def get_alleles(self, blood_type):
+        """
+        Konversi golongan darah menjadi alel yang mungkin
+        """
+        blood_map = {
+            "A": ["A", "O"],
+            "B": ["B", "O"],
+            "AB": ["A", "B"],
+            "O": ["O", "O"]
+        }
+        return blood_map.get(blood_type, ["O", "O"])
+    
+    def determine_blood_type(self, allele1, allele2):
+        """
+        Menentukan golongan darah berdasarkan kombinasi alel
+        """
+        if allele1 == "A" and allele2 == "B" or allele1 == "B" and allele2 == "A":
+            return "AB"
+        elif allele1 == "A" and allele2 == "A" or allele1 == "A" and allele2 == "O" or allele1 == "O" and allele2 == "A":
+            return "A"
+        elif allele1 == "B" and allele2 == "B" or allele1 == "B" and allele2 == "O" or allele1 == "O" and allele2 == "B":
+            return "B"
+        else:
+            return "O"
+
+# Input dari pengguna
+father_blood_type = input("Masukkan golongan darah Ayah (A, B, AB, O)(gunakan huruf besar): ")
+mother_blood_type = input("Masukkan golongan darah Ibu (A, B, AB, O)(gunakan huruf besar): ")
+
+# Membuat objek orang tua
+father = Father(father_blood_type)
+mother = Mother(mother_blood_type)
+
+# Membuat objek anak dan menentukan golongan darahnya
+child = Child(father, mother)
+
+# Menampilkan hasil
+print(f"Golongan darah anak yang mungkin: {child.blood_type}")
